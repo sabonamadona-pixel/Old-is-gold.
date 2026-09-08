@@ -1,0 +1,218 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+
+<style>
+body {
+  background-color: #f4f4f9;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.quiz-container {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  padding: 30px;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 1.4rem;
+  color: #333;
+}
+
+.options-container {
+  margin: 20px 0;
+}
+
+.option-btn {
+  background-color: #f0f0f0;
+  border: 2px solid #e0e0e0;
+  border-radius: 5px;
+  color: #333;
+  display: block;
+  font-size: 1rem;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-btn:hover {
+  background-color: #e1f5fe;
+  border-color: #03a9f4;
+}
+
+.option-btn.selected {
+  background-color: #03a9f4;
+  border-color: #0288d1;
+  color: white;
+}
+
+.btn {
+  background-color: #4caf50;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  display: block;
+  font-size: 1.1rem;
+  width: 100%;
+  padding: 12px;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.result-message {
+  margin-top: 20px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+
+</style>
+
+  <link href="#" rel="stylesheet">
+  <link rel="stylesheet" href="#">
+  <script src="#"></script>
+  <script src="#"></script>
+
+
+
+
+</head>
+<body>
+
+<div class="quiz-container" id="quiz">
+  <div class="quiz-header">
+    <h2 id="question">Loading question...</h2>
+    <div class="options-container" id="options">
+      <!-- Options will be injected here by JavaScript -->
+    </div>
+  </div>
+  <button id="submit" class="btn" disabled>Submit Answer</button>
+  <div id="result" class="result-message"></div>
+</div>
+
+
+
+
+<script>
+// External JSON URL (Using a public quiz API as an example)
+const jsonUrl = "https://opentdb.com";
+
+let quizData = [];
+let currentQuiz = 0;
+let score = 0;
+let selectedAnswer = null;
+
+const questionEl = document.getElementById("question");
+const optionsContainer = document.getElementById("options");
+const submitBtn = document.getElementById("submit");
+const resultEl = document.getElementById("result");
+
+// Fetch the questions from the external JSON
+async function loadQuizData() {
+  try {
+    const response = await fetch(jsonUrl);
+    const data = await response.json();
+    
+    // Format OpenTDB API response to a cleaner structure
+    quizData = data.results.map(item => {
+      // Combine correct and incorrect answers, then shuffle them
+      const options = [...item.incorrect_answers, item.correct_answer];
+      options.sort(() => Math.random() - 0.5); 
+      
+      return {
+        question: item.question,
+        options: options,
+        correct: item.correct_answer
+      };
+    });
+
+    initQuiz();
+  } catch (error) {
+    questionEl.innerText = "Failed to load quiz data. Check your JSON URL.";
+    console.error("Error fetching JSON:", error);
+  }
+}
+
+function initQuiz() {
+  selectedAnswer = null;
+  submitBtn.disabled = true;
+  submitBtn.innerText = "Submit Answer";
+  optionsContainer.innerHTML = "";
+  
+  if (currentQuiz < quizData.length) {
+    const currentQuizData = quizData[currentQuiz];
+    
+    // Use innerHTML because API might return HTML entities (like &quot;)
+    questionEl.innerHTML = `${currentQuiz + 1}. ${currentQuizData.question}`;
+    
+    currentQuizData.options.forEach(option => {
+      const button = document.createElement("button");
+      button.classList.add("option-btn");
+      button.innerHTML = option;
+      button.addEventListener("click", () => selectOption(button, option));
+      optionsContainer.appendChild(button);
+    });
+  } else {
+    // Quiz finished
+    questionEl.innerText = "Quiz Completed!";
+    optionsContainer.innerHTML = "";
+    submitBtn.innerText = "Restart Quiz";
+    submitBtn.disabled = false;
+    resultEl.innerHTML = `Your Score: <strong>${score}</strong> / ${quizData.length}`;
+  }
+}
+
+function selectOption(button, option) {
+  // Clear previous selections
+  const buttons = optionsContainer.querySelectorAll(".option-btn");
+  buttons.forEach(btn => btn.classList.remove("selected"));
+  
+  // Highlight chosen option
+  button.classList.add("selected");
+  selectedAnswer = option;
+  submitBtn.disabled = false;
+}
+
+submitBtn.addEventListener("click", () => {
+  if (currentQuiz < quizData.length) {
+    // Check answer
+    if (selectedAnswer === quizData[currentQuiz].correct) {
+      score++;
+    }
+    
+    currentQuiz++;
+    initQuiz();
+  } else {
+    // Reset quiz
+    currentQuiz = 0;
+    score = 0;
+    resultEl.innerText = "";
+    loadQuizData();
+  }
+});
+
+// Start the application
+loadQuizData();
+
+</script>
+
+
+</body>
+</html>
