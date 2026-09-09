@@ -1,0 +1,206 @@
+
+<head>
+<style>
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.quiz-container {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.choice-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #eef2f3;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  text-align: left;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.choice-btn:hover {
+  background: #e0e6ed;
+}
+
+.choice-btn.correct {
+  background: #2ecc71;
+  color: white;
+  border-color: #27ae60;
+}
+
+.choice-btn.wrong {
+  background: #e74c3c;
+  color: white;
+  border-color: #c0392b;
+}
+
+#next-btn {
+  margin-top: 15px;
+  padding: 12px 25px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  float: right;
+}
+
+#next-btn:hover {
+  background-color: #2980b9;
+}
+
+
+</style>
+
+
+
+</head>
+<body>
+
+
+
+<div class="quiz-container">
+  <div id="quiz-box">
+    <h2 id="question-text">Loading quiz questions...</h2>
+    <div id="choices-container"></div>
+    <button id="next-btn" style="display: none;">Next Question</button>
+  </div>
+  <div id="result-box" style="display: none;">
+    <h2>Quiz Completed!</h2>
+    <p>Your Final Score: <span id="score-text">0</span></p>
+    <button onclick="location.reload()">Restart Quiz</button>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+let quizData = [];
+let currentQuestionIndex = 0;
+let score = 0;
+
+// Elements
+const questionElement = document.getElementById("question");
+const choicesContainer = document.getElementById("options");
+const nextButton = document.getElementById("next-btn");
+const quizBox = document.getElementById("quiz-box");
+const resultBox = document.getElementById("result-box");
+const scoreText = document.getElementById("score-text");
+
+// 1. Fetch data from external JSON
+async function loadQuizData() {
+  const jsonUrl = "https://raw.githubusercontent.com/sabonamadona-pixel/Old-is-gold./refs/heads/main/questions.json.txt"; 
+  try {
+    const response = await fetch(jsonUrl);
+    quizData = await response.json();
+    startQuiz();
+  } catch (error) {
+    questionElement.innerText = "Failed to load quiz data. Check JSON source / CORS headers.";
+    console.error("Error loading JSON:", error);
+  }
+}
+
+// 2. Start the Quiz
+function startQuiz() {
+  currentQuestionIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+// 3. Render Current Question
+function showQuestion() {
+  resetState();
+  let currentQuestion = quizData[currentQuestionIndex];
+  questionElement.innerText = currentQuestion.question;
+
+  currentQuestion.choices.forEach((choice, index) => {
+    const button = document.createElement("button");
+    button.innerText = choice;
+    button.classList.add("choice-btn");
+    button.addEventListener("click", () => selectAnswer(index, button));
+    choicesContainer.appendChild(button);
+  });
+}
+
+// 4. Reset choices on next step
+function resetState() {
+  nextButton.style.display = "none";
+  while (choicesContainer.firstChild) {
+    choicesContainer.removeChild(choicesContainer.firstChild);
+  }
+}
+
+// 5. Handle user selection
+function selectAnswer(selectedIndex, clickedButton) {
+  const currentQuestion = quizData[currentQuestionIndex];
+  const correctIndex = currentQuestion.correctAnswer;
+  
+  // Disable all buttons after selection
+  const allButtons = choicesContainer.querySelectorAll(".choice-btn");
+  allButtons.forEach(btn => btn.disabled = true);
+
+  if (selectedIndex === correctIndex) {
+    clickedButton.classList.add("correct");
+    score++;
+  } else {
+    clickedButton.classList.add("wrong");
+    // Show user the correct one
+    allButtons[correctIndex].classList.add("correct");
+  }
+
+  nextButton.style.display = "block";
+}
+
+// 6. Handle next button navigation
+nextButton.addEventListener("click", () => {
+  currentQuestionIndex++;
+  if (currentQuestionIndex < quizData.length) {
+    showQuestion();
+  } else {
+    showResults();
+  }
+});
+
+// 7. Show Final Performance
+function showResults() {
+  quizBox.style.display = "none";
+  resultBox.style.display = "block";
+  scoreText.innerText = `${score} / ${quizData.length}`;
+}
+
+// Initialize on page load
+loadQuizData();
+
+</script>
+
+</body>
