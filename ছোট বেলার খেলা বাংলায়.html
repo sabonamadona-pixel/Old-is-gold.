@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Text Boxes with Bengali Sum</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            padding: 20px;
+            background-color: #f4f7f6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Responsive Grid for Text Boxes */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 30px;
+        }
+
+        /* Colorful Boxes */
+        .box {
+            padding: 20px;
+            border-radius: 8px;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .box-1 { background-color: #e74c3c; }
+        .box-2 { background-color: #3498db; }
+        .box-3 { background-color: #2ecc71; }
+        .box-4 { background-color: #f1c40f; color: #333; }
+        .box-5 { background-color: #9b59b6; }
+        .box-6 { background-color: #e67e22; }
+
+        /* Custom behavior styling for clickable inputs */
+        .radio-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .radio-container input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        /* Controls Section */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-total {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        .btn-total:hover {
+            background-color: #1a252f;
+        }
+
+        .btn-clear {
+            background-color: #bdc3c7;
+            color: #333;
+        }
+
+        .btn-clear:hover {
+            background-color: #95a5a6;
+        }
+
+        .result-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #2c3e50;
+            min-height: 36px;
+        }
+
+ul, li { 
+mergin-left: 20px;
+}
+
+    </style>
+</head>
+<body>
+
+    <h2>ম্যাজিক সংখ্যার খেলা </h2>
+
+    <!-- Six Responsive Colorful Boxes -->
+    <div class="grid-container">
+
+ <center> 
+<strong> খেলার নিয়ম </strong>
+ </center>
+
+  
+<ul>
+
+<li>
+১ থেকে ৬৩-এর মধ্যে একটি সংখ্যা বেছে নিন এবং সেটি মনে রাখুন।
+
+</li>
+
+
+<li>
+আমি আপনাকে জিজ্ঞেস করব আপনার সংখ্যাটি প্রথম তালিকায় আছে কি না, তারপর দ্বিতীয় তালিকায়—এভাবে পর্যায়ক্রমে জানতে চাইব।
+</li>
+<li>
+নিচে ছয়টি ভিন্ন ভিন্ন রঙের সংখ্যার তালিকা দেওয়া হলো ।
+</li>
+<li>
+ যে তালিকার মধ্যে আপনার বেছে নেওয়া সংখ্যাটি আছে ঠিক সেই তালিকার ডানদিকে ছোট্ট চেকবক্সে ক্লিক করুন ।
+সমস্ত তালিকাগুলি চেক করা হয়ে গেলে পর, </li>
+<li>
+" উত্তর জানতে এখানে ক্লিক করুন"
+বাটন এ ক্লিক করুন ।
+</li>
+
+  </ul>
+
+
+
+
+    <div class="box box-1">
+    <span>
+১, ৩, ৫, ৭, ৯, ১১, ১৩, ১৫, ১৭, ১৯, ২১, ২৩, ২৫, ২৭, ২৯, ৩১, ৩৩, ৩৫, ৩৭, ৩৯, ৪১, ৪৩, ৪৫, ৪৭, ৪৯, ৫১, ৫৩, ৫৫, ৫৭, ৫৯, ৬১, ৬৩
+    </span>
+    <label class="radio-container">
+    <input type="radio" class="toggle-radio" name="box1" value="1" data-checked="false">
+            </label>
+        </div>
+
+
+
+
+   <div class="box box-2">
+   <span>
+২, ৩, ৬, ৭, ১০, ১১, ১৪, ১৫, ১৮, ১৯, ২২, ২৩, ২৬, ২৭, ৩০, ৩১, ৩৪, ৩৫, ৩৮, ৩৯, ৪২, ৪৩, ৪৬, ৪৭, ৫০, ৫১, ৫৪, ৫৫, ৫৮, ৫৯, ৬২, ৬৩
+   </span>
+   <label class="radio-container">
+   <input type="radio" class="toggle-radio" name="box2" value="2" data-checked="false">
+    </label>
+    </div>
+
+
+   <div class="box box-3">
+   <span>
+৪, ৫, ৬, ৭, ১২, ১৩, ১৪, ১৫, ২০, ২১, ২২, ২৩, ২৮, ২৯, ৩০, ৩১, ৩৬, ৩৭, ৩৮, ৩৯, ৪৪, ৪৫, ৪৬, ৪৭, ৫২, ৫৩, ৫৪, ৫৫, ৬০, ৬১, ৬২, ৬৩
+    </span>
+    <label class="radio-container">
+    <input type="radio" class="toggle-radio" name="box3" value="4" data-checked="false">
+     </label>
+     </div>
+
+
+
+   <div class="box box-4">
+   <span>
+৮, ৯, ১০, ১১, ১২, ১৩, ১৪, ১৫, ২৪, ২৫, ২৬, ২৭, ২৮, ২৯, ৩০, ৩১, ৪০, ৪১, ৪২, ৪৩, ৪৪, ৪৫, ৪৬, ৪৭, ৫৬, ৫৭, ৫৮, ৫৯, ৬০, ৬১, ৬২, ৬৩
+
+   </span>
+   <label class="radio-container">
+   <input type="radio" class="toggle-radio" name="box4" value="8" data-checked="false">
+    </label>
+    </div>
+
+
+
+   <div class="box box-5">
+   <span>
+১৬, ১৭, ১৮, ১৯, ২০, ২১, ২২, ২৩, ২৪, ২৫, ২৬, ২৭, ২৮, ২৯, ৩০, ৩১, ৪৮, ৪৯, ৫০, ৫১, ৫২, ৫৩, ৫৪, ৫৫, ৫৬, ৫৭, ৫৮, ৫৯, ৬০, ৬১, ৬২, ৬৩
+    </span>
+    <label class="radio-container">
+    <input type="radio" class="toggle-radio" name="box5" value="16" data-checked="false">
+   </label>
+   </div>
+
+
+
+   <div class="box box-6">
+   <span>
+৩২, ৩৩, ৩৪, ৩৫, ৩৬, ৩৭, ৩৮, ৩৯, ৪০, ৪১, ৪২, ৪৩, ৪৪, ৪৫, ৪৬, ৪৭, ৪৮, ৪৯, ৫০, ৫১, ৫২, ৫৩, ৫৪, ৫৫, ৫৬, ৫৭, ৫৮, ৫৯, ৬০, ৬১, ৬২, ৬৩
+   </span>
+   <label class="radio-container">
+   <input type="radio" class="toggle-radio" name="box6" value="32" data-checked="false">
+   </label>
+   </div>
+   </div>
+
+
+
+    <!-- Total and Reset Controls -->
+    <div class="controls">
+        <button class="btn btn-total" id="calcTotal">উত্তর জানতে এখানে ক্লিক করুন</button>
+        <div class="result-display" id="totalDisplay"></div>
+        <button class="btn btn-clear" id="clearAll">পুনরায় খেলুন</button>
+    </div>
+
+
+<br> <center> ছোট বেলার খেলা </center>  </br>
+    <script>
+        const radios = document.querySelectorAll('.toggle-radio');
+        const calcBtn = document.getElementById('calcTotal');
+        const clearBtn = document.getElementById('clearAll');
+        const display = document.getElementById('totalDisplay');
+
+        // Bengali number mapping
+        const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+
+        function convertToBengali(num) {
+            return num.toString().split('').map(digit => {
+                return bengaliDigits[digit] || digit;
+            }).join('');
+        }
+
+        // Logic to allow a radio button to select and deselect on click
+        radios.forEach(radio => {
+            radio.addEventListener('click', function(e) {
+                if (this.getAttribute('data-checked') === 'true') {
+                    this.checked = false;
+                    this.setAttribute('data-checked', 'false');
+                } else {
+                    this.checked = true;
+                    this.setAttribute('data-checked', 'true');
+                }
+            });
+        });
+
+        // Calculate Grand Total
+        calcBtn.addEventListener('click', () => {
+            let sum = 0;
+            radios.forEach(radio => {
+                if (radio.checked) {
+                    sum += parseInt(radio.value, 10);
+                }
+            });
+            
+            display.textContent = `আপনার মনে করা সংখ্যাটি হচ্ছে: ${convertToBengali(sum)}`;
+        });
+
+        // Clear All Reset functionality
+        clearBtn.addEventListener('click', () => {
+            radios.forEach(radio => {
+                radio.checked = false;
+                radio.setAttribute('data-checked', 'false');
+            });
+            display.textContent = '';
+        });
+    </script>
+</body>
+</html>
